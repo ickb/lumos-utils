@@ -75,13 +75,14 @@ export function getRpc() {
     return chainAdapter.rpc;
 }
 
-export function getRpcBatcher() {
-    return chainAdapter.rpcBatcher;
-}
+// Comment out to change in the future the query implementation details and cache parameters
+// export function getRpcBatcher() {
+//     return chainAdapter.rpcBatcher;
+// }
 
 export async function getHeaderByNumber(blockNumber: Hexadecimal): Promise<Header> {
     const get = chainAdapter.rpcBatcher.get;
-    const res = await get("getHeaderByNumber/" + blockNumber, true);
+    const res = await get("getHeaderByNumber/" + blockNumber, true);//query encoding, change to reimplement batching
     if (res === undefined) {
         throw Error("Header not found from blockNumber " + blockNumber);
     }
@@ -116,7 +117,7 @@ function createRPCBatcher(rpc: RPC) {
         });
     }
 
-    async function get<T>(request: string, cacheable: boolean) {
+    async function get<T>(request: string, cacheable: boolean) {//Add a lifetime and force invalidation parameters?
         return new Promise<T>((resolve, reject) =>
             batcherState.update(async ({ pending, cache }) => {
                 if (cacheable && cache.has(request)) {
@@ -142,7 +143,7 @@ function createRPCBatcher(rpc: RPC) {
     async function _process(rpc: RPC, requests: Map<string, { cacheable: boolean, callbacks: Callback[] }>) {
         const batch = rpc.createBatchRequest();
         for (const k of requests.keys()) {
-            batch.add(...k.split('/'));
+            batch.add(...k.split('/'));//query decoding, change to reimplement batching
         }
 
         try {
