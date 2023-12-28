@@ -1,1 +1,0 @@
-{"version":3,"file":"secp256k1_signer.d.ts","sourceRoot":"","sources":["../src/secp256k1_signer.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,uBAAuB,EAAmB,MAAM,oBAAoB,CAAC;AAE9E,OAAO,EAAE,MAAM,EAAE,WAAW,EAAE,MAAM,iBAAiB,CAAC;AAEtD,wBAAgB,mBAAmB,CAAC,WAAW,EAAE,MAAM,iBAC9B,uBAAuB,eAAe,MAAM,KAAG,QAAQ,WAAW,CAAC,CAQ3F"}

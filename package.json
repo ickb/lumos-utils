@@ -1,7 +1,7 @@
 {
-  "name": "lumos-utils",
+  "name": "@ickb/lumos-utils",
   "version": "1.0.0",
-  "description": "",
+  "description": "A small utility framework built on top of ckb-js/lumos",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -11,22 +11,24 @@
     "/lib"
   ],
   "keywords": [],
-  "author": "",
+  "author": "phroi",
   "license": "MIT",
   "dependencies": {
-    "@ckb-lumos/base": "^0.20.0",
-    "@ckb-lumos/bi": "^0.20.0",
-    "@ckb-lumos/ckb-indexer": "^0.20.0",
-    "@ckb-lumos/codec": "^0.20.0",
-    "@ckb-lumos/common-scripts": "^0.20.0",
-    "@ckb-lumos/config-manager": "^0.20.0",
-    "@ckb-lumos/hd": "^0.20.0",
-    "@ckb-lumos/helpers": "^0.20.0",
-    "@ckb-lumos/rpc": "^0.20.0",
-    "keccak": "^3.0.3"
+    "@ckb-lumos/base": "0.22.0-next.1",
+    "@ckb-lumos/bi": "0.22.0-next.1",
+    "@ckb-lumos/ckb-indexer": "0.22.0-next.1",
+    "@ckb-lumos/codec": "0.22.0-next.1",
+    "@ckb-lumos/common-scripts": "0.22.0-next.1",
+    "@ckb-lumos/config-manager": "0.22.0-next.1",
+    "@ckb-lumos/hd": "0.22.0-next.1",
+    "@ckb-lumos/helpers": "0.22.0-next.1",
+    "@ckb-lumos/light-client": "0.22.0-next.1",
+    "@ckb-lumos/rpc": "0.22.0-next.1",
+    "immutable": "^4.3.0",
+    "keccak": "^3.0.4"
   },
   "devDependencies": {
-    "@types/keccak": "^3.0.1",
-    "typescript": "^5.1.6"
+    "@types/keccak": "^3.0.4",
+    "typescript": "^5.3.3"
   }
 }

@@ -1,11 +1,13 @@
 import { default as createKeccak } from "keccak";
 import { bytes } from "@ckb-lumos/codec";
-import { Script, blockchain } from "@ckb-lumos/base";
+import { blockchain } from "@ckb-lumos/base";
 import { TransactionSkeletonType, createTransactionFromSkeleton } from "@ckb-lumos/helpers";
 import { createP2PKHMessageGroup } from "@ckb-lumos/common-scripts";
-import { scriptEq } from "./utils";
+import { I8Cell, I8ScriptFrom, scriptEq } from "./cell";
+import { defaultScript } from "./config";
+import { List } from "immutable";
 
-interface EthereumRpc {
+export interface EthereumRpc {
     (payload: { method: 'personal_sign'; params: [string /*from*/, string /*message*/] }): Promise<string>;
 }
 
@@ -23,8 +25,32 @@ export function getEthereumProvider() {
     return window.ethereum as EthereumProvider;
 }
 
-export async function signer(transaction: TransactionSkeletonType, accountLock: Script) {
+export function pwlockSifter(inputs: List<I8Cell>, ethereumAddress: string) {
+    let accountCells: typeof inputs = List();
+    let unknowns: typeof inputs = List();
+
+    const accountLock = I8ScriptFrom({
+        ...defaultScript("PW_LOCK"),
+        args: ethereumAddress,
+        witness: "0x" + "00".repeat(65)
+    });
+
+    for (const c of inputs) {
+        if (!scriptEq(c.lock, accountLock)) {
+            unknowns = unknowns.push(c);
+            continue;
+        }
+
+        accountCells = accountCells.push(c.set("lock", accountLock));
+    }
+
+    return { accountCells, unknowns };
+}
+
+export async function pwlockSigner(transaction: TransactionSkeletonType, ethereumAddress: string) {
     // just like P2PKH: https://github.com/nervosnetwork/ckb-system-scripts/wiki/How-to-sign-transaction
+    const accountLock = { ...defaultScript("PW_LOCK"), args: ethereumAddress };
+
     const keccak = createKeccak("keccak256");
 
     const messageForSigning = createP2PKHMessageGroup(transaction, [accountLock], {
